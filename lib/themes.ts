@@ -29,7 +29,7 @@ export const themes: Record<string, Theme> = {
     accent: '#F5D87A',
     soft: '#F5E6D3',
     pop: '#C0392B',
-    bokeh: ['#E8913A33', '#F5D87A22', '#C0392B22'],
+    bokeh: ['#E8913A', '#F5D87A', '#C0392B'],
     grain: true,
   },
 
@@ -44,7 +44,7 @@ export const themes: Record<string, Theme> = {
     accent: '#E8891A',
     soft: '#FDF6E3',
     pop: '#4CAF50',
-    bokeh: ['#F5C51833', '#E8891A22', '#4CAF5022'],
+    bokeh: ['#F5C518', '#E8891A', '#4CAF50'],
     grain: true,
   },
 
@@ -59,7 +59,7 @@ export const themes: Record<string, Theme> = {
     accent: '#F1C40F',
     soft: '#FAF0FF',
     pop: '#E91E8C',
-    bokeh: ['#C084FC33', '#F1C40F22', '#E91E8C22'],
+    bokeh: ['#C084FC', '#F1C40F', '#E91E8C'],
     grain: true,
   },
 
@@ -74,7 +74,7 @@ export const themes: Record<string, Theme> = {
     accent: '#D4AF37',
     soft: '#3D1C0A',
     pop: '#C0392B',
-    bokeh: ['#8B451333', '#D4AF3722', '#C0392B22'],
+    bokeh: ['#8B4513', '#D4AF37', '#C0392B'],
     grain: false,
   },
 };
