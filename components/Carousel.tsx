@@ -7,38 +7,36 @@ interface CarouselProps {
   photos: DrivePhoto[];
 }
 
+// Alternating directions and varied speeds for visual interest
 const ROW_CONFIG = [
   { duration: 40, direction: 'right' as const },
-  { duration: 65, direction: 'left' as const },
+  { duration: 55, direction: 'left' as const },
   { duration: 28, direction: 'right' as const },
+  { duration: 48, direction: 'left' as const },
+  { duration: 35, direction: 'right' as const },
+  { duration: 60, direction: 'left' as const },
 ];
 
-const PHOTOS_PER_ROW = 10;
+const PHOTOS_PER_ROW = 6;
 
 function buildRows(photos: DrivePhoto[]): DrivePhoto[][] {
-  const rowCount = photos.length < 15 ? 2 : 3;
-  const rows: DrivePhoto[][] = [];
+  // Scale rows with photo count: 2 rows min, up to 6 rows for large sets
+  let rowCount: number;
+  if (photos.length < 10) rowCount = 2;
+  else if (photos.length < 20) rowCount = 3;
+  else if (photos.length < 40) rowCount = 4;
+  else if (photos.length < 70) rowCount = 5;
+  else rowCount = 6;
 
-  for (let i = 0; i < rowCount; i++) {
-    const start = i * PHOTOS_PER_ROW;
-    const end = start + PHOTOS_PER_ROW;
-    const row = photos.slice(start, end);
-    if (row.length > 0) rows.push(row);
-  }
+  const rows: DrivePhoto[][] = Array.from({ length: rowCount }, () => []);
 
-  // If last row is too sparse (< 5), merge into previous
-  if (rows.length > 1 && rows[rows.length - 1].length < 5) {
-    const last = rows.pop()!;
-    rows[rows.length - 1] = [...rows[rows.length - 1], ...last];
-  }
-
-  // Distribute remaining photos across rows
-  const remaining = photos.slice(rowCount * PHOTOS_PER_ROW);
-  remaining.forEach((photo, i) => {
-    rows[i % rows.length].push(photo);
+  // Round-robin distribute all photos across rows
+  photos.forEach((photo, i) => {
+    rows[i % rowCount].push(photo);
   });
 
-  return rows;
+  // Remove empty rows (shouldn't happen, but safety)
+  return rows.filter((row) => row.length > 0);
 }
 
 export default function Carousel({ photos }: CarouselProps) {
