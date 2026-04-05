@@ -3,13 +3,54 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { DrivePhoto } from '@/lib/drive';
 
-function shuffle<T>(arr: T[]): T[] {
+// Extract a grouping key from filename — strips trailing sequence numbers
+// e.g., "20260321_154942.heic" → "20260321_1549" (groups burst shots together)
+function getPhotoGroup(photo: DrivePhoto): string {
+  const name = photo.name.replace(/\.[^.]+$/, ''); // strip extension
+  // Keep first ~80% of the name as group key — clusters burst shots
+  return name.slice(0, Math.max(name.length - 3, 4));
+}
+
+// Fisher-Yates shuffle
+function basicShuffle<T>(arr: T[]): T[] {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
+}
+
+// Shuffle then spread similar photos apart to avoid clusters
+function shuffle(photos: DrivePhoto[]): DrivePhoto[] {
+  if (photos.length < 3) return basicShuffle(photos);
+
+  const shuffled = basicShuffle(photos);
+
+  // Group photos by filename prefix
+  const groups = new Map<string, DrivePhoto[]>();
+  for (const photo of shuffled) {
+    const key = getPhotoGroup(photo);
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key)!.push(photo);
+  }
+
+  // Interleave: pick one from each group in round-robin
+  const groupArrays = basicShuffle([...groups.values()]);
+  const result: DrivePhoto[] = [];
+  let remaining = true;
+
+  while (remaining) {
+    remaining = false;
+    for (const group of groupArrays) {
+      if (group.length > 0) {
+        result.push(group.shift()!);
+        remaining = remaining || group.length > 0;
+      }
+    }
+  }
+
+  return result;
 }
 
 const RETRY_DELAYS_MS = [30_000, 60_000, 300_000];
