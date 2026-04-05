@@ -16,6 +16,7 @@ function requireEnv(key: string): string {
 export const serverConfig = {
   driveApiKey: () => requireEnv('GOOGLE_DRIVE_API_KEY'),
   driveFolderId: () => requireEnv('GOOGLE_DRIVE_FOLDER_ID'),
+  visionApiKey: () => process.env.GOOGLE_VISION_API_KEY || '',
 };
 
 // Client-safe — all prefixed with NEXT_PUBLIC_

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { fetchPhotosFromDrive } from '@/lib/drive';
 import { getCached, setCache } from '@/lib/cache';
+import { moderatePhotos } from '@/lib/moderation';
 
 export const revalidate = 300;
 
@@ -20,7 +21,13 @@ export async function GET() {
   }
 
   try {
-    const photos = await fetchPhotosFromDrive(folderId, apiKey);
+    let photos = await fetchPhotosFromDrive(folderId, apiKey);
+
+    const visionKey = process.env.GOOGLE_VISION_API_KEY;
+    if (visionKey) {
+      photos = await moderatePhotos(photos, visionKey);
+    }
+
     if (photos.length > 0) {
       setCache(photos);
     }
