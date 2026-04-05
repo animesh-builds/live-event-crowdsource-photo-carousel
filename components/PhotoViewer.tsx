@@ -53,6 +53,23 @@ export default function PhotoViewer({ photos, initialIndex, onClose }: PhotoView
     return () => { document.body.style.overflow = ''; };
   }, []);
 
+  // Trap mobile back gesture — close viewer instead of leaving site
+  useEffect(() => {
+    const closedByBack = { current: false };
+    history.pushState({ viewer: true }, '');
+    const handlePop = () => {
+      closedByBack.current = true;
+      onClose();
+    };
+    window.addEventListener('popstate', handlePop);
+    return () => {
+      window.removeEventListener('popstate', handlePop);
+      if (!closedByBack.current && history.state?.viewer) {
+        history.back();
+      }
+    };
+  }, [onClose]);
+
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     if (e.touches.length === 1) {
       touchStart.current = {
