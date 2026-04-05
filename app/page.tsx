@@ -15,7 +15,7 @@ import FallbackScreen from '@/components/FallbackScreen';
 // =============================================================================
 function EmptyState() {
   return (
-    <div className="flex flex-col items-center justify-center py-32 gap-4">
+    <div className="flex flex-col items-center justify-center py-16 sm:py-32 gap-4">
       <motion.p
         className="font-display text-[var(--color-soft)] text-xl md:text-2xl opacity-50 text-center px-8"
         animate={{ opacity: [0.3, 0.6, 0.3] }}
@@ -86,7 +86,7 @@ export default function Home() {
       </motion.header>
 
       {/* Main content */}
-      <div className="relative z-10 pb-16">
+      <div className="relative z-10 pb-8 sm:pb-16">
         {status === 'loading' && <LoadingSkeleton />}
         {status === 'error' && <FallbackScreen onRetry={refresh} />}
         {status === 'success' && photos.length === 0 && <EmptyState />}
@@ -97,7 +97,7 @@ export default function Home() {
 
       {/* Upload footer */}
       {clientConfig.uploadFormUrl && (
-        <footer className="text-center pb-10 relative z-10">
+        <footer className="text-center pb-6 sm:pb-10 relative z-10">
           <a
             href={clientConfig.uploadFormUrl}
             target="_blank"

@@ -13,9 +13,8 @@ function getRotation(id: string): number {
   return (Math.abs(hash) % 7) - 3; // -3 to +3 degrees
 }
 
-// Deterministic mosaic height from photo ID
-// Mobile-scaled via CSS clamp: 60% size on small screens, full on desktop
-const HEIGHTS = [160, 176, 192, 208, 224, 240, 256];
+// Deterministic mosaic height — controls card height, width adapts to photo
+const HEIGHTS = [140, 152, 164, 176, 188, 200, 212];
 function getMosaicHeight(id: string): number {
   let hash = 0;
   for (let i = 0; i < id.length; i++) {
@@ -34,8 +33,8 @@ export default function PhotoCard({ photo, index }: PhotoCardProps) {
   const rotation = getRotation(photo.id);
   const height = getMosaicHeight(photo.id);
 
-  // Scale cards down on mobile: ~65% at 375px, full at 768px+
-  const mobileHeight = Math.round(height * 0.65);
+  // Mobile scale: ~70% on small screens
+  const mobileHeight = Math.round(height * 0.7);
 
   if (hidden) return null;
 
@@ -56,11 +55,10 @@ export default function PhotoCard({ photo, index }: PhotoCardProps) {
       }}
     >
       <div
-        className="border-2 sm:border-4 border-white rounded-sm overflow-hidden shadow-lg"
+        className="border-2 sm:border-[3px] border-white rounded-sm overflow-hidden"
         style={{
-          width: `clamp(${mobileHeight * 1.2}px, ${height * 0.15}vw + ${height * 0.5}px, ${height * 1.2}px)`,
           height: `clamp(${mobileHeight}px, ${height * 0.12}vw + ${height * 0.4}px, ${height}px)`,
-          boxShadow: '0 4px 24px rgba(0,0,0,0.4)',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.35)',
         }}
       >
         <img
@@ -68,7 +66,7 @@ export default function PhotoCard({ photo, index }: PhotoCardProps) {
           alt={photo.name}
           loading="lazy"
           onError={() => setHidden(true)}
-          className="w-full h-full object-cover object-top"
+          className="h-full w-auto block"
           draggable={false}
         />
       </div>
