@@ -1,7 +1,10 @@
 'use client';
 
+import { useState, useCallback } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { DrivePhoto } from '@/lib/drive';
 import CarouselRow from './CarouselRow';
+import PhotoViewer from './PhotoViewer';
 
 interface CarouselProps {
   photos: DrivePhoto[];
@@ -20,7 +23,6 @@ const ROW_CONFIG = [
 ];
 
 function buildRows(photos: DrivePhoto[]): DrivePhoto[][] {
-  // More rows — fills the screen better, especially on mobile
   let rowCount: number;
   if (photos.length < 6) rowCount = 2;
   else if (photos.length < 12) rowCount = 3;
@@ -31,31 +33,47 @@ function buildRows(photos: DrivePhoto[]): DrivePhoto[][] {
   else rowCount = 8;
 
   const rows: DrivePhoto[][] = Array.from({ length: rowCount }, () => []);
-
-  // Round-robin distribute all photos across rows
   photos.forEach((photo, i) => {
     rows[i % rowCount].push(photo);
   });
-
   return rows.filter((row) => row.length > 0);
 }
 
 export default function Carousel({ photos }: CarouselProps) {
   const rows = buildRows(photos);
+  const [viewerIndex, setViewerIndex] = useState<number | null>(null);
+
+  const handlePhotoOpen = useCallback((photoId: string) => {
+    const idx = photos.findIndex((p) => p.id === photoId);
+    if (idx >= 0) setViewerIndex(idx);
+  }, [photos]);
 
   return (
-    <div className="flex flex-col gap-3 sm:gap-6 overflow-hidden">
-      {rows.map((rowPhotos, i) => {
-        const config = ROW_CONFIG[i % ROW_CONFIG.length];
-        return (
-          <CarouselRow
-            key={i}
-            photos={rowPhotos}
-            direction={config.direction}
-            duration={config.duration}
+    <>
+      <div className="flex flex-col gap-3 sm:gap-6 overflow-hidden">
+        {rows.map((rowPhotos, i) => {
+          const config = ROW_CONFIG[i % ROW_CONFIG.length];
+          return (
+            <CarouselRow
+              key={i}
+              photos={rowPhotos}
+              direction={config.direction}
+              duration={config.duration}
+              onPhotoOpen={handlePhotoOpen}
+            />
+          );
+        })}
+      </div>
+
+      <AnimatePresence>
+        {viewerIndex !== null && (
+          <PhotoViewer
+            photos={photos}
+            initialIndex={viewerIndex}
+            onClose={() => setViewerIndex(null)}
           />
-        );
-      })}
-    </div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

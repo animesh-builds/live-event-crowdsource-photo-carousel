@@ -7,9 +7,10 @@ interface CarouselRowProps {
   photos: DrivePhoto[];
   direction: 'left' | 'right';
   duration: number;
+  onPhotoOpen?: (photoId: string) => void;
 }
 
-export default function CarouselRow({ photos, direction, duration }: CarouselRowProps) {
+export default function CarouselRow({ photos, direction, duration, onPhotoOpen }: CarouselRowProps) {
   if (photos.length === 0) return null;
 
   // Duplicate for seamless infinite loop
@@ -28,7 +29,12 @@ export default function CarouselRow({ photos, direction, duration }: CarouselRow
         }
       >
         {doubled.map((photo, i) => (
-          <PhotoCard key={`${photo.id}-${i}`} photo={photo} index={i % photos.length} />
+          <PhotoCard
+            key={`${photo.id}-${i}`}
+            photo={photo}
+            index={i % photos.length}
+            onOpen={() => onPhotoOpen?.(photo.id)}
+          />
         ))}
       </div>
     </div>
