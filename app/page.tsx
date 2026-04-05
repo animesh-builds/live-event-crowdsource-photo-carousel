@@ -51,7 +51,7 @@ export default function Home() {
 
       {/* Header */}
       <motion.header
-        className="text-center pt-14 pb-8 relative z-10"
+        className="text-center pt-8 sm:pt-14 pb-4 sm:pb-8 relative z-10"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease: 'easeOut' }}
@@ -71,7 +71,7 @@ export default function Home() {
         )}
 
         {count > 0 && (
-          <p className="font-display text-[var(--color-accent)] text-lg mt-4 tracking-wide">
+          <p className="font-display text-[var(--color-accent)] text-sm sm:text-lg mt-3 sm:mt-4 tracking-wide">
             {count} {count === 1 ? 'photo' : 'photos'} shared
           </p>
         )}

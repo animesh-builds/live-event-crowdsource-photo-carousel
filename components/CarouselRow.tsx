@@ -18,7 +18,7 @@ export default function CarouselRow({ photos, direction, duration }: CarouselRow
   return (
     <div className="overflow-hidden group">
       <div
-        className={`flex gap-4 items-center ${
+        className={`flex gap-2 sm:gap-4 items-center ${
           direction === 'right' ? 'animate-scroll-right' : 'animate-scroll-left'
         } group-hover:[animation-play-state:paused]`}
         style={

@@ -8,14 +8,14 @@ const ROWS = [
 
 export default function LoadingSkeleton() {
   return (
-    <div className="flex flex-col gap-6 overflow-hidden">
+    <div className="flex flex-col gap-3 sm:gap-6 overflow-hidden">
       {ROWS.map((row, ri) => (
-        <div key={ri} className="flex gap-4 px-4">
+        <div key={ri} className="flex gap-2 sm:gap-4 px-2 sm:px-4">
           {row.heights.map((h, ci) => (
             <div
               key={ci}
-              className="flex-shrink-0 rounded-sm border-4 border-white/10"
-              style={{ width: h * 1.2, height: h }}
+              className="flex-shrink-0 rounded-sm border-2 sm:border-4 border-white/10"
+              style={{ width: `clamp(${Math.round(h * 0.65 * 1.2)}px, 15vw, ${h * 1.2}px)`, height: `clamp(${Math.round(h * 0.65)}px, 12vw, ${h}px)` }}
             >
               <div
                 className="w-full h-full animate-shimmer rounded-sm"

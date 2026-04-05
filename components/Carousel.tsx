@@ -45,7 +45,7 @@ export default function Carousel({ photos }: CarouselProps) {
   const rows = buildRows(photos);
 
   return (
-    <div className="flex flex-col gap-6 overflow-hidden">
+    <div className="flex flex-col gap-3 sm:gap-6 overflow-hidden">
       {rows.map((rowPhotos, i) => {
         const config = ROW_CONFIG[i % ROW_CONFIG.length];
         return (
