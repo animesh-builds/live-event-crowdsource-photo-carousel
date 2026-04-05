@@ -64,7 +64,7 @@ export default function PhotoCard({ photo, index }: PhotoCardProps) {
           alt={photo.name}
           loading="lazy"
           onError={() => setHidden(true)}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain bg-black/20"
           draggable={false}
         />
       </div>
