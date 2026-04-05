@@ -7,26 +7,28 @@ interface CarouselProps {
   photos: DrivePhoto[];
 }
 
-// Alternating directions and varied speeds for visual interest
+// Alternating directions and varied speeds — moderately paced
 const ROW_CONFIG = [
-  { duration: 40, direction: 'right' as const },
-  { duration: 55, direction: 'left' as const },
   { duration: 28, direction: 'right' as const },
-  { duration: 48, direction: 'left' as const },
-  { duration: 35, direction: 'right' as const },
-  { duration: 60, direction: 'left' as const },
+  { duration: 38, direction: 'left' as const },
+  { duration: 22, direction: 'right' as const },
+  { duration: 34, direction: 'left' as const },
+  { duration: 26, direction: 'right' as const },
+  { duration: 40, direction: 'left' as const },
+  { duration: 30, direction: 'right' as const },
+  { duration: 36, direction: 'left' as const },
 ];
 
-const PHOTOS_PER_ROW = 6;
-
 function buildRows(photos: DrivePhoto[]): DrivePhoto[][] {
-  // Scale rows with photo count: 2 rows min, up to 6 rows for large sets
+  // More rows — fills the screen better, especially on mobile
   let rowCount: number;
-  if (photos.length < 10) rowCount = 2;
-  else if (photos.length < 20) rowCount = 3;
-  else if (photos.length < 40) rowCount = 4;
-  else if (photos.length < 70) rowCount = 5;
-  else rowCount = 6;
+  if (photos.length < 6) rowCount = 2;
+  else if (photos.length < 12) rowCount = 3;
+  else if (photos.length < 20) rowCount = 4;
+  else if (photos.length < 30) rowCount = 5;
+  else if (photos.length < 50) rowCount = 6;
+  else if (photos.length < 80) rowCount = 7;
+  else rowCount = 8;
 
   const rows: DrivePhoto[][] = Array.from({ length: rowCount }, () => []);
 
@@ -35,7 +37,6 @@ function buildRows(photos: DrivePhoto[]): DrivePhoto[][] {
     rows[i % rowCount].push(photo);
   });
 
-  // Remove empty rows (shouldn't happen, but safety)
   return rows.filter((row) => row.length > 0);
 }
 
