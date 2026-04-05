@@ -56,17 +56,17 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease: 'easeOut' }}
       >
-        <h1 className="font-display text-[var(--color-soft)] text-2xl sm:text-4xl md:text-6xl lg:text-7xl leading-tight px-4">
+        <h1 className="font-display text-[var(--color-soft)] text-xl sm:text-4xl md:text-6xl lg:text-7xl leading-snug sm:leading-tight px-6 sm:px-4 whitespace-pre-line break-words">
           {clientConfig.eventTitle}
         </h1>
 
         {clientConfig.eventSubtitle && (
-          <div className="flex items-center justify-center gap-3 mt-3">
-            <div className="w-8 h-px bg-[var(--color-accent)] opacity-50" />
-            <p className="font-body text-[var(--color-primary)] text-xs tracking-[0.35em] uppercase">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mt-2 sm:mt-3 px-4">
+            <div className="w-6 sm:w-8 h-px bg-[var(--color-accent)] opacity-50 flex-shrink-0" />
+            <p className="font-body text-[var(--color-primary)] text-[10px] sm:text-xs tracking-[0.2em] sm:tracking-[0.35em] uppercase">
               {clientConfig.eventSubtitle}
             </p>
-            <div className="w-8 h-px bg-[var(--color-accent)] opacity-50" />
+            <div className="w-6 sm:w-8 h-px bg-[var(--color-accent)] opacity-50 flex-shrink-0" />
           </div>
         )}
 
