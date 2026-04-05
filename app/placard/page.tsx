@@ -7,10 +7,10 @@ export default function PlacardPage() {
   const formUrl = clientConfig.uploadFormUrl;
 
   return (
-    <div className="min-h-screen bg-[#F5EDE0] flex flex-col items-center justify-center p-8">
+    <div className="min-h-screen bg-[#F5EDE0] flex flex-col items-center justify-center p-4 sm:p-8">
       <div className="max-w-md w-full text-center space-y-8">
         {/* Event Title */}
-        <h1 className="font-display text-[#3d2b1f] text-4xl md:text-5xl leading-tight">
+        <h1 className="font-display text-[#3d2b1f] text-2xl sm:text-4xl md:text-5xl leading-tight">
           {clientConfig.eventTitle}
         </h1>
 
@@ -35,7 +35,7 @@ export default function PlacardPage() {
             <div className="p-4 bg-white rounded-lg shadow-sm">
               <QRCodeSVG
                 value={formUrl}
-                size={256}
+                size={200}
                 bgColor="#FFFFFF"
                 fgColor="#3d2b1f"
                 level="M"

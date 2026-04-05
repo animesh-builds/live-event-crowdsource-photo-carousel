@@ -56,7 +56,7 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease: 'easeOut' }}
       >
-        <h1 className="font-display text-[var(--color-soft)] text-4xl md:text-6xl lg:text-7xl leading-tight px-4">
+        <h1 className="font-display text-[var(--color-soft)] text-2xl sm:text-4xl md:text-6xl lg:text-7xl leading-tight px-4">
           {clientConfig.eventTitle}
         </h1>
 

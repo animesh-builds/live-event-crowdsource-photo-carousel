@@ -56,7 +56,7 @@ export default function PasswordGate({ children }: { children: React.ReactNode }
           <BokehBackground />
           <div className="relative z-10 flex flex-col items-center gap-6 px-8 max-w-sm w-full">
             {/* Event title */}
-            <h1 className="font-display text-[var(--color-soft)] text-4xl text-center leading-tight">
+            <h1 className="font-display text-[var(--color-soft)] text-2xl sm:text-4xl text-center leading-tight">
               {clientConfig.eventTitle}
             </h1>
 
@@ -81,7 +81,7 @@ export default function PasswordGate({ children }: { children: React.ReactNode }
               placeholder="enter passcode"
               className="w-full bg-transparent border border-[var(--color-accent)] border-opacity-50
                          text-[var(--color-soft)] text-center font-body text-sm tracking-widest
-                         px-4 py-3 rounded-none outline-none
+                         px-4 py-3 min-h-[44px] rounded-none outline-none
                          placeholder:text-[var(--color-primary)] placeholder:opacity-40
                          focus:border-opacity-100 transition-all duration-300"
             />
@@ -90,7 +90,8 @@ export default function PasswordGate({ children }: { children: React.ReactNode }
             <button
               onClick={handleSubmit}
               className="font-body text-[var(--color-accent)] text-xs tracking-[0.3em] uppercase
-                         hover:text-[var(--color-soft)] transition-colors duration-300"
+                         hover:text-[var(--color-soft)] transition-colors duration-300
+                         min-h-[44px] px-4"
             >
               &rarr;&nbsp;&nbsp;Enter
             </button>

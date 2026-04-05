@@ -15,7 +15,7 @@ export default function FallbackScreen({ onRetry }: FallbackScreenProps) {
       <BokehBackground />
       <GrainOverlay />
       <div className="relative z-10 text-center px-8">
-        <h1 className="font-display text-[var(--color-soft)] text-4xl md:text-5xl mb-4">
+        <h1 className="font-display text-[var(--color-soft)] text-2xl sm:text-4xl md:text-5xl mb-4">
           {clientConfig.eventTitle}
         </h1>
         <div className="w-12 h-px bg-[var(--color-accent)] mx-auto mb-4 opacity-60" />
