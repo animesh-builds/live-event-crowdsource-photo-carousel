@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =============================================================================
+   CSS Variables — injected by layout.tsx based on active theme.
+   Defaults here are for the 'midnight' theme.
+   ============================================================================= */
+:root {
+  --color-background: #1c0f0a;
+  --color-surface: #2a1810;
+  --color-primary: #e8913a;
+  --color-accent: #f5d87a;
+  --color-soft: #f5e6d3;
+  --color-pop: #c0392b;
+}
+
+/* =============================================================================
+   Base resets
+   ============================================================================= */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-soft);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* =============================================================================
+   Print styles for /placard page
+   ============================================================================= */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
