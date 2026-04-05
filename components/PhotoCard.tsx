@@ -88,7 +88,7 @@ export default function PhotoCard({ photo, index }: PhotoCardProps) {
             onClick={() => setExpanded(false)}
           >
             <motion.img
-              src={photo.fullUrl}
+              src={photo.thumbnailUrl.replace('sz=w800', 'sz=w1600')}
               alt={photo.name}
               className="max-w-full max-h-full object-contain rounded-sm shadow-2xl"
               initial={{ scale: 0.85, opacity: 0 }}
