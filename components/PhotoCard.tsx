@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DrivePhoto } from '@/lib/drive';
 
@@ -31,6 +31,9 @@ interface PhotoCardProps {
 export default function PhotoCard({ photo, index }: PhotoCardProps) {
   const [hidden, setHidden] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const lastTouchDist = useRef(0);
   const rotation = getRotation(photo.id);
   const height = getMosaicHeight(photo.id);
 
@@ -76,35 +79,73 @@ export default function PhotoCard({ photo, index }: PhotoCardProps) {
         </div>
       </motion.div>
 
-      {/* Lightbox overlay */}
+      {/* Lightbox overlay with zoom */}
       <AnimatePresence>
         {expanded && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4 sm:p-8"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            onClick={() => setExpanded(false)}
+            onClick={() => { setExpanded(false); setZoom(1); setPan({ x: 0, y: 0 }); }}
+            onWheel={(e) => {
+              e.stopPropagation();
+              setZoom((z) => Math.min(Math.max(z + (e.deltaY > 0 ? -0.15 : 0.15), 1), 4));
+              if (zoom <= 1) setPan({ x: 0, y: 0 });
+            }}
+            onTouchMove={(e) => {
+              if (e.touches.length === 2) {
+                const dx = e.touches[0].clientX - e.touches[1].clientX;
+                const dy = e.touches[0].clientY - e.touches[1].clientY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (lastTouchDist.current > 0) {
+                  const delta = (dist - lastTouchDist.current) * 0.008;
+                  setZoom((z) => Math.min(Math.max(z + delta, 1), 4));
+                }
+                lastTouchDist.current = dist;
+              } else if (e.touches.length === 1 && zoom > 1) {
+                setPan((p) => ({
+                  x: p.x + (e.touches[0].clientX - (lastTouchDist.current || e.touches[0].clientX)),
+                  y: p.y + (e.touches[0].clientY - (lastTouchDist.current || e.touches[0].clientY)),
+                }));
+              }
+            }}
+            onTouchEnd={() => { lastTouchDist.current = 0; }}
           >
-            <motion.img
-              src={photo.thumbnailUrl}
-              alt={photo.name}
-              className="max-w-full max-h-full object-contain rounded-sm shadow-2xl"
+            <motion.div
+              className="relative p-2 sm:p-3 bg-white/10 rounded-sm"
+              style={{ transform: `scale(${zoom}) translate(${pan.x / zoom}px, ${pan.y / zoom}px)` }}
               initial={{ scale: 0.85, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.85, opacity: 0 }}
               transition={{ duration: 0.3, ease: 'easeOut' }}
-              draggable={false}
-            />
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={photo.thumbnailUrl}
+                alt={photo.name}
+                className="max-w-[90vw] max-h-[85vh] object-contain rounded-sm"
+                draggable={false}
+              />
+            </motion.div>
             <button
               className="absolute top-4 right-4 sm:top-6 sm:right-6 text-white/60 hover:text-white
                          text-2xl sm:text-3xl font-body transition-colors min-h-[44px] min-w-[44px]
                          flex items-center justify-center"
-              onClick={(e) => { e.stopPropagation(); setExpanded(false); }}
+              onClick={(e) => { e.stopPropagation(); setExpanded(false); setZoom(1); setPan({ x: 0, y: 0 }); }}
             >
               &times;
             </button>
+            {zoom > 1 && (
+              <button
+                className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/40 text-xs
+                           font-body tracking-widest uppercase hover:text-white/70 transition-colors"
+                onClick={(e) => { e.stopPropagation(); setZoom(1); setPan({ x: 0, y: 0 }); }}
+              >
+                reset zoom
+              </button>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
