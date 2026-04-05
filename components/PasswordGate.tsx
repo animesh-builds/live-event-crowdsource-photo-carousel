@@ -56,7 +56,7 @@ export default function PasswordGate({ children }: { children: React.ReactNode }
           <BokehBackground />
           <div className="relative z-10 flex flex-col items-center gap-6 px-8 max-w-sm w-full">
             {/* Event title */}
-            <h1 className="font-display text-[var(--color-soft)] text-xl sm:text-4xl text-center leading-snug sm:leading-tight whitespace-pre-line break-words">
+            <h1 className="font-display text-[var(--color-soft)] text-[clamp(0.9rem,5vw,1.25rem)] sm:text-4xl text-center leading-snug sm:leading-tight whitespace-nowrap sm:whitespace-normal">
               {clientConfig.eventTitle}
             </h1>
 

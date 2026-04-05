@@ -63,7 +63,11 @@ async function fetchFilesInFolder(
   for (const file of files) {
     if (file.mimeType === 'application/vnd.google-apps.folder') {
       subfolderFetches.push(fetchFilesInFolder(file.id, apiKey, depth + 1));
-    } else if (file.mimeType.startsWith('image/')) {
+    } else if (
+      file.mimeType.startsWith('image/') &&
+      !file.mimeType.startsWith('video/') &&
+      file.mimeType !== 'application/vnd.google-apps.video'
+    ) {
       photos.push({
         id: file.id,
         name: file.name,
